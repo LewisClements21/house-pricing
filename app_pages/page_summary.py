@@ -9,7 +9,7 @@ def page_summary_body():
     # Link to README file, so the users can have access to full project documentation
     st.write(
         f"* For additional information, please visit and **read** the "
-        f"[Project README file](https://github.com/Amareteklay/heritage-housing-issues).")
+        f"[Project README file](https://github.com/LewisClements21/house-pricing.git).")
     
     # copied from README file - "Business Requirements" section
     st.success(
