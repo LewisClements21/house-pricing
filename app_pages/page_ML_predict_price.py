@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from src.data_management import load_housing_data, load_pkl_file
 def page_ml_predict_price_body():
     # load price pipeline files
-    version = 'v1'
+    version = 'v4'
     price_pipe = load_pkl_file(f"outputs/ml_pipeline/predict_price/{version}/regression_pipeline.pkl")
     price_feat_importance = plt.imread(f"outputs/ml_pipeline/predict_price/{version}/features_importance.png")
     X_train = pd.read_csv(f"outputs/ml_pipeline/predict_price/{version}/X_train.csv")

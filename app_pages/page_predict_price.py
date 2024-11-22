@@ -1,13 +1,13 @@
 import streamlit as st
 import pandas as pd
 from src.data_management import load_housing_data, load_heritage_data, load_pkl_file
-from src.machine_learning.predictive_analysis_ui import predict_price, predict_inheritted_house_price 
+from src.machine_learning.predictive_analysis_ui import predict_price, predict_inherited_house_price 
 def page_predict_price_body():
 	
 	# load predict tenure files
-	version = 'v1'
-	price_pipe = load_pkl_file(f"outputs/ml_pipeline/predict_price/{version}/regression_pipeline.pkl")
-	house_features = (pd.read_csv(f"outputs/ml_pipeline/predict_price/{version}/X_train.csv")
+	version = 'v4'
+	price_pipe = load_pkl_file(f"outputs/ml_pipeline/predict_price/v4/regression_pipeline.pkl")
+	house_features = (pd.read_csv(f"outputs/ml_pipeline/predict_price/v4/X_train.csv")
 					.columns
 					.to_list()
 					)
@@ -17,13 +17,13 @@ def page_predict_price_body():
 	)
 	
 	st.write(f"Predicting sales price of inheritted houses.")
-	
+
 	X_inheritted = load_heritage_data()
 	st.write(X_inheritted.filter(house_features).head())
 	
 	for i in range(X_inheritted.shape[0]):
-		predicted_price = predict_inheritted_house_price(X_inheritted.iloc[[i,]], house_features, price_pipe)
-		st.write(f"Row: {i} has predicted price of {predicted_price}.")
+		predict_inherited_house_price(X_inheritted.iloc[[i,]], house_features, price_pipe)
+		
 	
 	# Generate Live Data
 	# check_variables_for_UI(tenure_features, churn_features, cluster_features)
