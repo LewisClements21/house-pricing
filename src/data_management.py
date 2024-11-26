@@ -10,7 +10,7 @@ def load_housing_data():
     
 @st.cache(suppress_st_warning=True, allow_output_mutation=True)
 def load_heritage_data():
-    df_h = pd.read_csv("outputs/datasets/cleaned/InherittedHousePricesCleaned.csv")
+    df_h = pd.read_csv("outputs/datasets/cleaned/HousePricesCleaned.csv")
     return df_h
 
 def load_pkl_file(file_path):
