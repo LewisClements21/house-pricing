@@ -1,6 +1,6 @@
 # **House Price Predictor**
 
-House Price Predictor is a Machine Learning project that helps users to predict the sales prices of houses in Awes, Iowa taking the houses' attributes as inputs.
+This project is a machine learning-based web application that predicts house prices in Ames, Iowa based on a dataset of housing features like size, quality, and location.
 ![Sample Page](docs/screenshots/summary-page.png)
 The dashboard for [House Price Predictor is hosted on Heroku](https://herokuapp.com/).
 
@@ -26,11 +26,11 @@ The dashboard for [House Price Predictor is hosted on Heroku](https://herokuapp.
 
 ## **1. Dataset Content**
 
-* The dataset for this project is sourced from [Kaggle](https://www.kaggle.com/codeinstitute/housing-prices-data). We fabricated a user story where predictive analytics can be applied in a real project in the workplace. 
+* The dataset for this project is obtained from [Kaggle](https://www.kaggle.com/codeinstitute/housing-prices-data). We fabricated a user story where predictive analytics can be applied in a real project in the workplace. 
 
 * The dataset has almost 1.5 thousand rows and represents housing records from Ames, Iowa. The dataset has 22 features indicating house profile (Floor Area, Basement, Garage, Kitchen, Lot, Porch, Wood Deck, Year Built) and its respective sale price for houses built between 1872 and 2010.
 
-The table below indicates the variables, their description and units of measurement. We note that some variables are numerical while others are categorical.
+The table below shows the variables, their description and units of measurement. We note that some variables are numerical while others are categorical.
 
 |Variable|Meaning|Units|
 |:----|:----|:----|
@@ -71,9 +71,9 @@ The table below indicates the variables, their description and units of measurem
 * **Summed price** is the total of the sale prices of the four inherited houses.
 
 ## **2. Business Requirements**
-Our client, who has received an inheritance from a deceased great-grandfather located in Ames, Iowa, has requested us to  help in maximizing the sales price for the inherited properties.
+Our client, who received an inheritance from a deceased great-grandfather in Ames, Iowa, has asked us to  help in maximizing the sales price for the inherited properties.
 
-Although our client has an excellent understanding of property prices in her own state and residential area, she fears that basing her estimates for property worth on her current knowledge might lead to inaccurate appraisals. What makes a house desirable and valuable where she comes from might not be the same in Ames, Iowa. 
+Although our client has a good understanding of property prices in her own state and residential area, she is worried that basing her estimates on her current knowledge might lead to inaccurate appraisals. What makes a house desirable and valuable where she comes from might not be the same in Ames, Iowa. 
 
 Our client provided us with a public dataset they found with house prices for Ames, Iowa.
 
@@ -99,25 +99,25 @@ In order to address the business requirements, we have the following epics and u
 
 ### User Stories
 
-* **US1:** As a client, I want to know which attributes of a house are most correlated with its sale price so that I can base my prediction on the the right set of features.(*Business Requirement Covered: BR1*)
+* US1: As a client, I want to identify which house attributes have the strongest correlation with sale price, so I can focus on the most influential features for predictions. (Business Requirement Covered: BR1)
 
-* **US2:** As a client, I want to have reliable prediction of the sale price of houses I have inherited so that I can sell them at the maximum total price possible. (*Business Requirement Covered: BR2*)
+* US2: As a client, I want accurate sale price predictions for the houses I have inherited, so I can maximize the total revenue from their sale. (Business Requirement Covered: BR2)
 
-* **US3:** As a technical user, I want to learn about the ML steps that were used to arrive at the sale price prediction so that I can understand the model employed.(*Business Requirement Covered: BR2*)
+* US3: As a technical user, I want to understand the machine learning steps used to generate sale price predictions, so I can better comprehend the chosen model. (Business Requirement Covered: BR2)
 
-* **US4:** As a technical user, I want to know the model performance so that I can ensure that the predictions are reliable. (*Business Requirement Covered: BR2*)
+* US4: As a technical user, I want to evaluate the model's performance, so I can ensure its predictions are reliable. (Business Requirement Covered: BR2)
 
-* **US5:** As a client, I want to get a dashboard so that I can display the results of the prediction on a standalone app.
+* US5: As a client, I want a dashboard to display prediction results in a standalone application for easy access and visualization.
 
-* **US6:** As a user, I want to have interactive input widgets so that I can provide real-time house data and predict the sale price. (*Business Requirement Covered: BR2*)
+* US6: As a user, I want interactive input widgets to enter real-time house data and instantly receive sale price predictions. (Business Requirement Covered: BR2)
 
-* **US7:** As a user, I want to see relevant plots so that I can visualize the relationships between sale price and other features. (*Business Requirement Covered: BR1*)
+* US7: As a user, I want to view relevant plots that illustrate the relationships between sale price and other features, so I can better interpret the data. (Business Requirement Covered: BR1)
 
-* **US8:** As a user, I want to have access to the data cleaning and preparation pipeline so that I can quickly predict sale price without reinventing the wheel.
+* US8: As a user, I want access to a pre-built data cleaning and preparation pipeline, so I can predict sale prices efficiently without starting from scratch.
 
-* **US9:** As a user, I want to know the source and content of the data used in training the model so that I can be confident about the quality of the trained model.
+* US9: As a user, I want to know the source and details of the data used to train the model, so I can trust the quality and reliability of its predictions.
 
-* **US10:** As a user, I want to know the project hypotheses and how they were validated so that I get a deeper understand of the mechanisms that determine sale price. 
+* US10: As a user, I want a clear explanation of the project's hypotheses and their validation process, so I can gain deeper insights into the factors influencing sale price.
 
 
 

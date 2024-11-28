@@ -1,206 +1,163 @@
 import streamlit as st
-from src.data_management import load_housing_data
 import matplotlib.pyplot as plt
 import seaborn as sns
-import ppscore as pps
-sns.set_style("whitegrid")
-from feature_engine.discretisation import ArbitraryDiscretiser
 import numpy as np
-import plotly.express as px
+import ppscore as pps
+from feature_engine.discretisation import ArbitraryDiscretiser
+from src.data_management import load_housing_data
+
+sns.set_style("whitegrid")
+
 
 def page_correlation_study_body():
     """
-    Display correlated features and a checkbox to show the show
-    house price per variable.
+    Display correlated features and enable visual exploration of house price
+    relationships with variables.
     """
     df = load_housing_data()
 
-    vars_to_study = ['1stFlrSF', 'GarageArea', 'GrLivArea', 'KitchenQual', 'MasVnrArea', 'OpenPorchSF', 'OverallQual', 'TotalBsmtSF', 'YearBuilt', 'YearRemodAdd']
+    vars_to_study = [
+        '1stFlrSF', 'GarageArea', 'GrLivArea', 'KitchenQual',
+        'MasVnrArea', 'OpenPorchSF', 'OverallQual',
+        'TotalBsmtSF', 'YearBuilt', 'YearRemodAdd'
+    ]
 
     st.write("### Housing Prices Correlation Study (BR1)")
     st.info(
-        f"* **BR1** - The client is interested in discovering how house attributes correlate with sale prices.\
-             Therefore, the client expects data visualizations of the correlated variables against the sale price. "
+        "* **BR1**: The client is interested in discovering correlations between house attributes and sale prices. "
+        "This includes visualizing how various features relate to the target variable, `SalePrice`."
     )
 
-    # inspect data
+    # Inspect the dataset
     if st.checkbox("Inspect Housing Data"):
         st.write(
-            f"* The dataset has {df.shape[0]} rows and {df.shape[1]} columns.\
-                 We show the first 10 rows below.\n"
-            f"* SalePrice is our target variable, and we want to identify features correlated to it.")
-        
+            f"* The dataset contains {df.shape[0]} rows and {df.shape[1]} columns. "
+            "Below are the first 10 rows of the dataset."
+        )
         st.write(df.head(10))
 
     st.write("---")
 
-
-    # Correlation Study Summary
+    # Correlation study summary
     st.write(
-        f"* We conducted a correlation study the notebook to better understand how "
-        f"the variables are correlated to sale price of a property.\
-         This addresses the first business requirement (BR1) of the project. \n"
-        f"* We found that the most correlated variable are:\n **{vars_to_study}**"
+        "* A correlation study was conducted to understand relationships between house features and `SalePrice`. "
+        f"The most correlated features are: **{vars_to_study}**."
     )
 
-
-    # Text based on "03 - Correlation_Study" notebook - "Conclusions and Next steps" section
     st.info(
-        f"We make the following observations from both the correlation analysis and the plots (particularly the heatmaps below).\n"
-        f"* Higher values of 1stFlrSF, GarageArea, GrLivArea, MasVnrArea and TotalBsmtSF are associated with higher sale price.\n"
-        f"* Recently built houses (YearBuilt) and houses with recently added remodel (YearRemodAdd) have typically higher prices.\n"  
-        f"* Features that represent the quality of a property (KitchenQual and OverallQual) are also positively correlated to sale price of a house.\n\n" 
-        f"While the plots corroborate these observations, we also note,\
-         from the plots of sale price against the correlated features,\
-         that the relationships become less clear at higher values of the variables.\n"
-        f"* When the size of 1stFlrSF is around 2500, for example, sale price can be low or it can be very high.\n"
-        f"* We see similar pattern in the regression plot of sale price and GarageArea when the latter's value is around 800.\n"
+        "* Key observations:\n"
+        "    - Larger values for `1stFlrSF`, `GarageArea`, `GrLivArea`, `MasVnrArea`, and `TotalBsmtSF` "
+        "tend to be associated with higher `SalePrice`.\n"
+        "    - Recently built or remodeled houses (`YearBuilt`, `YearRemodAdd`) typically have higher prices.\n"
+        "    - Features reflecting property quality (`KitchenQual`, `OverallQual`) are also positively correlated with `SalePrice`.\n"
+        "    - However, relationships weaken at higher feature values, e.g., large `1stFlrSF` or `GarageArea` values."
     )
 
-
-    df_eda = df.filter(vars_to_study + ['SalePrice'])
+    df_eda = df[vars_to_study + ['SalePrice']]
     target_var = 'SalePrice'
-    st.write("#### Data visualizations")
-    # Distribution of target variable
-    if st.checkbox("Distribution of Variable"):
-        plot_target_hist(df_eda, target_var) 
 
-    # Individual plots per variable
+    st.write("#### Data Visualizations")
+    # Target variable distribution
+    if st.checkbox("Distribution of Target Variable"):
+        plot_target_hist(df_eda, target_var)
+
+    # Visualize house prices per variable
     if st.checkbox("House Prices per Variable"):
-        house_price_per_variable(df_eda)
-    
+        visualize_price_per_feature(df_eda, vars_to_study)
 
-    if st.checkbox("Heatmaps: Pearson, Spearman and PPS Correlations"):
-        df_corr_pearson, df_corr_spearman, pps_matrix = CalculateCorrAndPPS(df)
-        DisplayCorrAndPPS(df_corr_pearson = df_corr_pearson,
-                  df_corr_spearman = df_corr_spearman, 
-                  pps_matrix = pps_matrix,
-                  CorrThreshold = 0.4, PPS_Threshold =0.2,
-                  figsize=(12,10), font_annot=10)
+    # Correlation heatmaps
+    if st.checkbox("Correlation Heatmaps (Pearson, Spearman, PPS)"):
+        df_corr_pearson, df_corr_spearman, pps_matrix = calculate_corr_and_pps(df)
+        display_corr_and_pps(
+            df_corr_pearson, df_corr_spearman, pps_matrix,
+            corr_threshold=0.4, pps_threshold=0.2
+        )
 
 
-def house_price_per_variable(df_eda):
+def visualize_price_per_feature(df, features):
     """
-    Generate box plot, line plot or scatter plot of SalePrice and
-    the house features 
+    Generate plots (box, line, scatter) showing `SalePrice` trends for each feature.
     """
-    vars_to_study = ['1stFlrSF', 'GarageArea', 'GrLivArea', 'KitchenQual', 'MasVnrArea', 'OpenPorchSF', 'OverallQual', 'TotalBsmtSF', 'YearBuilt', 'YearRemodAdd']
-    time = ['YearBuilt', 'YearRemodAdd']
+    time_features = ['YearBuilt', 'YearRemodAdd']
     target_var = 'SalePrice'
-    
-    for col in vars_to_study:
-        if len(df_eda[col].unique()) <= 10:
-            plot_box(df_eda, col, target_var)
-            print("\n\n")
+
+    for col in features:
+        unique_values = len(df[col].unique())
+        if unique_values <= 10:
+            plot_box(df, col, target_var)
+        elif col in time_features:
+            plot_line(df, col, target_var)
         else:
-            if col in time:
-                plot_line(df_eda, col, target_var)
-                print("\n\n")
-            else:
-                plot_reg(df_eda, col, target_var)
-                print("\n\n")
+            plot_reg(df, col, target_var)
+
 
 def plot_target_hist(df, target_var):
-  """
-  Function to plot a histogram of the target variable
-  """
-  fig, axes = plt.subplots(figsize=(12, 6))
-  sns.histplot(data=df, x=target_var, kde=True)
-  plt.title(f"Distribution of {target_var}", fontsize=20)       
-  st.pyplot(fig)
-
-def plot_reg(df, col, target_var):
-    """
-    Generate scatter plot
-    """
-    fig, axes = plt.subplots(figsize=(12, 6))
-    sns.regplot(data=df, x=col, y=target_var, ci=None)
-    plt.title(f"Regression plot of {target_var} against {col}", fontsize=20)        
-    st.pyplot(fig) # st.pyplot() renders image, in notebook is plt.show()
-
-def plot_line(df, col, target_var):
-    """
-    Generate line plot
-    """
-    fig, axes = plt.subplots(figsize=(12, 6))
-    sns.lineplot(data=df, x=col, y=target_var)
-    plt.title(f"Line plot of {target_var} against {col}", fontsize=20)        
-    st.pyplot(fig) # st.pyplot() renders image, in notebook is plt.show()
-
-def plot_box(df, col, target_var):
-    """
-    Generate box plot
-    """
-    fig, axes = plt.subplots(figsize=(12, 6))
-    sns.boxplot(data=df, x=col, y=target_var) 
-    plt.title(f"Box plot of {target_var} against {col}", fontsize=20)
-    st.pyplot(fig) # st.pyplot() renders image, in notebook is plt.show()
-
-## Heatmaps
-
-def heatmap_corr(df,threshold, figsize=(20,12), font_annot = 8):
-  """
-  Function to create heatmap using correlations.
-  """
-  if len(df.columns) > 1:
-    mask = np.zeros_like(df, dtype=np.bool)
-    mask[np.triu_indices_from(mask)] = True
-    mask[abs(df) < threshold] = True
-
-    fig, axes = plt.subplots(figsize=figsize)
-    sns.heatmap(df, annot=True, xticklabels=True, yticklabels=True,
-                mask=mask, cmap='viridis', annot_kws={"size": font_annot}, ax=axes,
-                linewidth=0.5
-                     )
-    axes.set_yticklabels(df.columns, rotation = 0)
-    plt.ylim(len(df.columns),0)
+    """Plot histogram of the target variable."""
+    fig, ax = plt.subplots(figsize=(12, 6))
+    sns.histplot(data=df, x=target_var, kde=True, ax=ax)
+    plt.title(f"Distribution of {target_var}", fontsize=20)
     st.pyplot(fig)
 
 
-def heatmap_pps(df,threshold, figsize=(20,12), font_annot = 8):
-    """
-    Function to create heatmap using pps.
-    """
-    if len(df.columns) > 1:
-
-      mask = np.zeros_like(df, dtype=np.bool)
-      mask[abs(df) < threshold] = True
-
-      fig, ax = plt.subplots(figsize=figsize)
-      ax = sns.heatmap(df, annot=True, xticklabels=True,yticklabels=True,
-                       mask=mask,cmap='rocket_r', annot_kws={"size": font_annot},
-                       linewidth=0.05,linecolor='grey')
-      
-      plt.ylim(len(df.columns),0)
-      st.pyplot(fig)
+def plot_reg(df, col, target_var):
+    """Generate scatter plot with regression line."""
+    fig, ax = plt.subplots(figsize=(12, 6))
+    sns.regplot(data=df, x=col, y=target_var, ci=None, ax=ax)
+    plt.title(f"Regression Plot: {target_var} vs {col}", fontsize=20)
+    st.pyplot(fig)
 
 
-def CalculateCorrAndPPS(df):
-  """
-  Function to calculate correlations and pps.
-  """
-  df_corr_spearman = df.corr(method="spearman")
-  df_corr_spearman.name = 'corr_spearman'
-  df_corr_pearson = df.corr(method="pearson")
-  df_corr_pearson.name = 'corr_pearson'
-
-  pps_matrix_raw = pps.matrix(df)
-  pps_matrix = pps_matrix_raw.filter(['x', 'y', 'ppscore']).pivot(columns='x', index='y', values='ppscore')
-
-  pps_score_stats = pps_matrix_raw.query("ppscore < 1").filter(['ppscore']).describe().T
-  print(pps_score_stats.round(3))
-
-  return df_corr_pearson, df_corr_spearman, pps_matrix
+def plot_line(df, col, target_var):
+    """Generate line plot."""
+    fig, ax = plt.subplots(figsize=(12, 6))
+    sns.lineplot(data=df, x=col, y=target_var, ax=ax)
+    plt.title(f"Line Plot: {target_var} vs {col}", fontsize=20)
+    st.pyplot(fig)
 
 
-def DisplayCorrAndPPS(df_corr_pearson, df_corr_spearman, pps_matrix,CorrThreshold,PPS_Threshold,
-                      figsize=(20,12), font_annot=8 ):
-  """
-  Function to display the correlations and pps.
-  """
+def plot_box(df, col, target_var):
+    """Generate box plot."""
+    fig, ax = plt.subplots(figsize=(12, 6))
+    sns.boxplot(data=df, x=col, y=target_var, ax=ax)
+    plt.title(f"Box Plot: {target_var} vs {col}", fontsize=20)
+    st.pyplot(fig)
 
-  heatmap_corr(df=df_corr_spearman, threshold=CorrThreshold, figsize=figsize, font_annot=font_annot)
 
-  heatmap_corr(df=df_corr_pearson, threshold=CorrThreshold, figsize=figsize, font_annot=font_annot)
+def calculate_corr_and_pps(df):
+    """Calculate Pearson, Spearman correlations and PPS matrix."""
+    df_corr_pearson = df.corr(method="pearson")
+    df_corr_spearman = df.corr(method="spearman")
+    pps_matrix = pps.matrix(df).pivot(columns='x', index='y', values='ppscore')
+    return df_corr_pearson, df_corr_spearman, pps_matrix
 
-  heatmap_pps(df=pps_matrix,threshold=PPS_Threshold, figsize=figsize, font_annot=font_annot)
+
+def display_corr_and_pps(df_corr_pearson, df_corr_spearman, pps_matrix, corr_threshold, pps_threshold):
+    """Display correlation and PPS heatmaps."""
+    st.write("##### Spearman Correlation Heatmap")
+    heatmap_corr(df_corr_spearman, corr_threshold)
+
+    st.write("##### Pearson Correlation Heatmap")
+    heatmap_corr(df_corr_pearson, corr_threshold)
+
+    st.write("##### PPS Heatmap")
+    heatmap_pps(pps_matrix, pps_threshold)
+
+
+def heatmap_corr(df, threshold, figsize=(12, 8)):
+    """Create a heatmap for correlation data."""
+    mask = np.triu(np.ones_like(df, dtype=bool))
+    mask[np.abs(df) < threshold] = True
+
+    fig, ax = plt.subplots(figsize=figsize)
+    sns.heatmap(df, annot=True, mask=mask, cmap='viridis', linewidths=0.5, ax=ax)
+    st.pyplot(fig)
+
+
+def heatmap_pps(df, threshold, figsize=(12, 8)):
+    """Create a heatmap for PPS data."""
+    mask = np.zeros_like(df, dtype=bool)
+    mask[df < threshold] = True
+
+    fig, ax = plt.subplots(figsize=figsize)
+    sns.heatmap(df, annot=True, mask=mask, cmap='rocket_r', linewidths=0.5, ax=ax)
+    st.pyplot(fig)

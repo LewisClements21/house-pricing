@@ -1,23 +1,19 @@
 import streamlit as st
 
 def page_project_hypothesis_body():
-
     st.write("### Project Hypotheses and Validation")
 
-    # conclusions taken from "03 - Correlation_Study" notebook 
+    # Conclusions derived from the "03 - Correlation_Study" notebook
     st.success(
-       f"**H1 - Size matters.** We hypothesize that larger the property, the higher its sale price will be.\n"
-        f"* **Correct.** From the correlation study results, we found that features that reflect the size of\
-             a property were positively and moderately correlated with sale price.\n\n"
-       
-       f"**H2 - Quality matters.** Ratings of the quality and condition of the house would reflect its value,\
-         and thus we suspect that higher quality ratings indicate higher sale price.\n"
-        f"* **Correct.**  We used the correlation between sale price and the kitchen quality and overall quality\
-             ratings to show that this is indeed the case.\n\n"
-       
-       f"**H3 - Time matters.** We expect that the value of a property will be significantly influenced by how\
-         old the property is and/or whether it had any remodel added to it recently.\n"
-        f"* **Correct.** We validated this hypothesis by studying the correlation between the sale price and\
-             the years it was built and/or had a remodel added to it. Both features have moderate positive correlation with sale price.\n"
-       )
-        
+        f"**H1 - Property size influences sale price.**\n"
+        f"We hypothesize that larger properties tend to have higher sale prices.\n"
+        f"* **Validated:** Our correlation study shows that features representing property size have a positive and moderate correlation with sale price.\n\n"
+
+        f"**H2 - Quality impacts value.**\n"
+        f"We hypothesize that better quality and condition ratings of a house correspond to higher sale prices.\n"
+        f"* **Validated:** The correlation analysis confirms this, particularly through features like kitchen quality and overall quality ratings, which show a strong positive relationship with sale price.\n\n"
+
+        f"**H3 - Age and renovations affect value.**\n"
+        f"We hypothesize that a property's age and whether it has undergone recent renovations significantly influence its sale price.\n"
+        f"* **Validated:** The correlation study highlights moderate positive relationships between sale price and features such as the year the house was built and whether it had recent renovations."
+    )
