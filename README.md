@@ -2,7 +2,7 @@
 
 This project is a machine learning-based web application that predicts house prices in Ames, Iowa based on a dataset of housing features like size, quality, and location.
 ![Sample Page](docs/screenshots/summary-page.png)
-The dashboard for [House Price Predictor is hosted on Heroku](https://herokuapp.com/).
+The dashboard for [House Price Predictor is hosted on Heroku](https://house-price-predictor-iowa-80ac19b0f501.herokuapp.com/).
 
 ## Table of Contents
 
@@ -353,6 +353,93 @@ This page presents:
 <img src="docs/screenshots/ml-predict-price3.png">
 </details>
 
+## Technologies Used
+
+The technologies used throughout the development are listed below:
+
+### Languages
+
+* [Python](https://www.python.org/)
+
+### Python Packages
+
+* [Pandas](https://pandas.pydata.org/docs/index.html) - Open source library for data manipulation and analysis.
+* [Numpy](https://numpy.org/doc/stable/index.html) - Adds support for large, multi-dimensional arrays and matrices, and high-level mathematical functions.
+* [YData Profiling](https://docs.profiling.ydata.ai/latest/) - For data profiling and exploratory data analysis.
+* [Matplotlib](https://matplotlib.org/) - Comprehensive library for creating static, animated and interactive visualisations.
+* [Seaborn](https://seaborn.pydata.org/) - Another data visualisation library for drawing attractive and informative statistical graphics.
+* [Feature-engine](https://feature-engine.trainindata.com/en/latest/) - Library with multiple transformers to engineer and select features for machine learning models.
+* [ppscore](https://pypi.org/project/ppscore/) - Library for detecting linear or non-linear relationships between two features.
+* [scikit-learn](https://scikit-learn.org/stable/) - Open source machine learning library that features various algorithms for training a ML model.
+
+### Other Technologies
+
+* [Git](https://git-scm.com/) - For version control
+* [GitHub](https://github.com/) - Code repository and GitHub projects was used as a Kanban board for Agile development
+* [Heroku](https://heroku.com) - For application deployment
+* [gitpod](https://gitpod.com/) - IDE used for development
+
+## Testing
+### Manual Testing
+
+#### User Story Testing
+* Dashboard was manually tested using user stories as a basis for determining success.
+* Jupyter notebooks were reliant on consecutive functions being successful so manual testing against user stories was deemed irrelevant.
+
+*As a non-technical user, I can view a project summary that describes the project, dataset and business requirements to understand the project at a glance.*
+
+| Feature | Action | Expected Result | Actual Result |
+| --- | --- | --- | --- |
+| Project summary page | Viewing summary page | Page is displayed, can move between sections on page | Functions as intended |
+
+---
+
+*As a non-technical user, I can view the project hypotheses and validations to determine what the project was trying to achieve and whether it was successful.*
+
+| Feature | Action | Expected Result | Actual Result |
+| --- | --- | --- | --- |
+| Project hypotheses page | Navigate to page | Clicking on navbar link in sidebar navigates to correct page | Functions as intended |
+
+---
+
+*As a non-technical user, I can enter unseen data into the model and receive a prediction (Business Requirement 2).*
+
+| Feature | Action | Expected Result | Actual Result |
+| --- | --- | --- | --- |
+| Prediction page | Navigate to page | Clicking on navbar link in sidebar navigates to correct page | Functions as intended |
+| Enter live data | Interact with widgets | All widgets are interactive, respond to user input | Functions as intended |
+| Live prediction | Click on 'Predict Sale Price' button | Clicking on button displays message on page with prediction | Functions as intended |
+
+---
+
+*As a technical user, I can view the correlation analysis to see how the outcomes were reached (Business Requirement 1).*
+
+| Feature | Action | Expected Result | Actual Result |
+| --- | --- | --- | --- |
+| Correlation Study page | Navigate to page | Clicking on navbar link in sidebar navigates to correct page | Functions as intended |
+| Correlation data | Tick inspect housing data checkbox | Correlation data is displayed on dashboard | Functions as intended |
+| PPS Heatmap | Tick PPS heatmap checkbox | Heatmap is displayed on dashboard | Functions as intended |
+| Feature Correlation | Select feature from dropdown box | Relevant countplot is displayed | Functions as intended |
+
+---
+
+*As a technical user, I can view all the data to understand the model performance and see statistics related to the model (Business Requirement 2)*
+
+| Feature | Action | Expected Result | Actual Result |
+| --- | --- | --- | --- |
+| ML House Price Predictor | Navigate to page | Clicking on navbar link in sidebar navigates to correct page | Functions as intended |
+| ML Pipelines | View page | Both ML Pipelines from Jupyter notebooks are displayed | Functions as intended |
+| Feature Importance | View page | Most important features are plotted and displayed | Functions as intended |
+| Model Performance | View page | Confusion matrix for train and test sets are displayed | Functions as intended |
+
+### Validation
+All code in the app_pages and src directories was validated as conforming to PEP8 standards using CodeInstitute's PEP8 Linter.
+* Some files had warnings due to 'line too long', however these were related to long strings when writing to the dashboard.
+* These warnings were ignored as it did not effect the readability of any functions.
+
+### Automated Unit Tests
+No automated unit tests have been carried out at this time.
+
 ## **7. Unfixed Bugs**
 
 * There were no known unfixed bugs in this project.
@@ -361,7 +448,7 @@ This page presents:
 
 ### **Heroku**
 
-* The App live link is: https://herokuapp.com/
+* The App live link is: https://house-price-predictor-iowa-80ac19b0f501.herokuapp.com/
 
 * The project was deployed to Heroku using the following steps.
 
@@ -375,6 +462,23 @@ This page presents:
 
 5. The deployment process should happen smoothly in case all deployment files are fully functional. Click now the button Open App on the top of the page to access your App.
 
+## Forking and Cloning
+If you wish to fork or clone this repository, please follow the instructions below:
+
+### Forking
+1. In the top right of the main repository page, click the **Fork** button.
+2. Under **Owner**, select the desired owner from the dropdown menu.
+3. **OPTIONAL:** Change the default name of the repository in order to distinguish it.
+4. **OPTIONAL:** In the **Description** field, enter a description for the forked repository.
+5. Ensure the 'Copy the main branch only' checkbox is selected.
+6. Click the **Create fork** button.
+
+### Cloning
+1. On the main repository page, click the **Code** button.
+2. Copy the HTTPS URL from the resulting dropdown menu.
+3. In your IDE terminal, navigate to the directory you want the cloned repository to be created.
+4. In your IDE terminal, type ```git clone``` and paste the copied URL.
+5. Hit Enter to create the cloned repository.
 
 ## **9. Main Data Analysis and Machine Learning Libraries**
 
